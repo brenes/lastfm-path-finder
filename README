@@ -1,1 +1,26 @@
 This project is the implementation of a conversation between César Alvarez Doval and myself, a program which finds a path between two (apparently) unrelated artists.
+
+== How to use it?
+
+Right now we have very few code but you could try:
+
+ gem install bundler
+
+and then:
+
+ bundle install
+
+and then a tiny script such as:
+
+ require "rubygems"
+ require "bundler/setup"
+
+ require 'lib/settings'
+
+ Settings.lastfm.artist.get_similar("kid606").each do |artist|
+
+   if artist.is_a? Hash
+     puts "#{artist["name"]}: #{artist["match"]}"
+   end
+
+ end
