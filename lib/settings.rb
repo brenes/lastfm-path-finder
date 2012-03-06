@@ -3,7 +3,7 @@ require 'lastfm'
 class Settings < Settingslogic
   source "config/settings.yml"
   
-  def self.lastfm
+  def self.lastfm_api
     @@lastfm ||= Lastfm.new(Settings["lastfm"]["api_key"], Settings["lastfm"]["api_secret"])
     @@lastfm
   end  

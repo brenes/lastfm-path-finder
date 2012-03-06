@@ -7,9 +7,15 @@ class Artist
   def initialize params
     self.name = params["name"] || params[:name]
   end
-  
+
   def self.find_in_lastfm name
-    Artist.new Settings.lastfm.artist.get_info(name)
+    
+    begin
+      Artist.new Settings.lastfm_api.artist.get_info(name)  
+    rescue Lastfm::ApiError => e    
+      nil  
+    end
+    
   end
 
 end
