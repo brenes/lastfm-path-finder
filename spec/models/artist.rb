@@ -1,17 +1,15 @@
-require 'rubygems'
-require "bundler/setup"
-require 'lib/artist'
-describe Artist do 
+require 'lib/lastfm_path_finder'
+describe LastfmPathFinder::Artist do 
   
   it "gets data for existing artists from Last.FM" do
-    artist = Artist.find_in_lastfm "pink floyd"
+    artist = LastfmPathFinder::Artist.find_in_lastfm "pink floyd"
     artist.should_not be_nil
     artist.name.should be_eql("Pink Floyd")
+    artist.id.should be_eql("pink-floyd")
   end  
 
-
   it "handles non-existing artists when retrieving info from Last.FM" do
-    artist = Artist.find_in_lastfm "who is pink?"
+    artist = LastfmPathFinder::Artist.find_in_lastfm "who is pink?"
     artist.should be_nil
   end
 

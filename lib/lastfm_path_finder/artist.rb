@@ -1,8 +1,12 @@
-require 'lib/settings'
+require 'active_support/core_ext'
 
-class Artist
+class LastfmPathFinder::Artist
 
   attr_accessor :name
+
+  def id
+    name.parameterize
+  end
 
   def initialize params
     self.name = params["name"] || params[:name]
@@ -11,7 +15,7 @@ class Artist
   def self.find_in_lastfm name
     
     begin
-      Artist.new Settings.lastfm_api.artist.get_info(name)  
+      LastfmPathFinder::Artist.new LastfmPathFinder::Settings.lastfm_api.artist.get_info(name)  
     rescue Lastfm::ApiError => e    
       nil  
     end
