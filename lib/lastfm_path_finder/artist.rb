@@ -7,14 +7,14 @@ class LastfmPathFinder::Artist
 
   value :name
 
-  def initialize params
-    self.id = params["id"] || params[:id]
-    self.name = params["name"] || params[:name]
+  def initialize params  
+    self.id = (params["name"] || params[:name]).parameterize
+    self.name = params["name"] || params[:name]  
   end
 
   def self.find_in_lastfm name
     begin
-      LastfmPathFinder::Artist.new({:id => name.parameterize}.merge(LastfmPathFinder::Settings.lastfm_api.artist.get_info(name)))
+      LastfmPathFinder::Artist.new(LastfmPathFinder::Settings.lastfm_api.artist.get_info(name))
     rescue Lastfm::ApiError => e    
       nil  
     end
