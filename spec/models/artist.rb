@@ -30,5 +30,19 @@ describe LastfmPathFinder::Artist do
     
   end
 
+  it "gets data about related artists on LastFM" do
+
+    VCR.use_cassette('lastfm', :record => :new_episodes) do
+      artist = LastfmPathFinder::Artist.new :name => "pink floyd"
+      related = artist.related_artists
+      related.should_not be_nil
+      related.members(:with_scores => true).last[0].should be_eql("David Gilmour")
+      related.members(:with_scores => true).last[1].should be_eql(1.0)
+      related.members(:with_scores => true)[-2][0].should be_eql("Roger Waters")
+      related.members(:with_scores => true)[-2][1].should be_eql(0.778598)
+    end
+
+  end
+
 
 end
