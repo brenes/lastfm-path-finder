@@ -44,14 +44,15 @@ class LastfmPathFinder::Finder
     end
 
     # 5)
-    related_from_members = related_from.members(:with_scores => true)
-    related_to_members = related_to.members(:with_scores => true)
+    related_from_members = related_from.members
+    related_to_members = related_to.members
 
     # We create an array of shared relates were we are gonna insert those artists present on both lists
     # with an score wquals to the product of both scores, so we can find the most related to both artists
     shared_relate = []
-    related_from_members.each do |name, score|
+    related_from_members.each do |name|
 
+      score = related_from.score(name)
       other_score = related_to.score(name)
       unless other_score.nil?
         shared_relate << {:name => name, :score => score*other_score}
@@ -67,7 +68,7 @@ class LastfmPathFinder::Finder
       path.score = shared_contact[:score]
 
       path.artists << from.name.value
-      path_artists << shared_contact[:name]
+      path.artists << shared_contact[:name]
       path.artists << to.name.value
 
       return path
@@ -79,8 +80,13 @@ class LastfmPathFinder::Finder
     related_from_members.reverse!
     related_to_members.reverse!
 
-    related_from_members.each do |from_name, from_score|
-      related_to_members.each do |to_name, to_score|
+    related_from_members.each do |from_name|
+
+      from_score = related_from.score(from_name)
+
+      related_to_members.each do |to_name|
+
+        to_score = related_to.score(to_name)
 
         path = self.find(LastfmPathFinder::Artist.new(:name => r_from), LastfmPathFinder::Artist.new(:name => r_to))
 
