@@ -1,14 +1,23 @@
 require 'rubygems'
 require "bundler/setup"
 require 'spork'
+require 'rspec'
+require 'rspec-redis_helper'
 #uncomment the following line to use spork with the debugger
 #require 'spork/ext/ruby-debug'
 
 Spork.prefork do
-  # Loading more in this block will cause your tests to run faster. However,
-  # if you change any configuration or code from libraries loaded here, you'll
-  # need to restart spork for it take effect.
-  
+
+  RSpec.configure do |spec|
+    spec.include RSpec::RedisHelper
+
+    # slightly modified from RSpec::RedisHelper gem site https://github.com/mlanett/rspec-redis_helper
+    spec.around(:each) do |example|
+      with_clean_redis do
+        example.run
+      end
+    end
+  end
 
 end
 
