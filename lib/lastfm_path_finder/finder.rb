@@ -25,7 +25,8 @@ class LastfmPathFinder::Finder
     unless score.nil?
       path = LastfmPathFinder::Path.new from, to
       path.score = score
-      path.artists = [from.name, to.name]
+      path.artists << from.name.value
+      path.artists << to.name.value
       return path
     end
 
@@ -37,7 +38,8 @@ class LastfmPathFinder::Finder
     unless score.nil?
       path = LastfmPathFinder::Path.new from, to
       path.score = score
-      path.artists = [from.name, to.name]
+      path.artists << from.name.value
+      path.artists << to.name.value
       return path
     end
 
@@ -63,7 +65,11 @@ class LastfmPathFinder::Finder
 
       path = LastfmPathFinder::Path.new from, to
       path.score = shared_contact[:score]
-      path.artists = [from.name, shared_contact[:name], to.name]
+
+      path.artists << from.name.value
+      path_artists << shared_contact[:name]
+      path.artists << to.name.value
+
       return path
     end
 
@@ -81,7 +87,9 @@ class LastfmPathFinder::Finder
         unless path.nil?
           new_path = LastfmPathFinder::Path.new from, to
           new_path.score = path.score * from_score * to_score
-          new_path.artists = [from.name] + path.artists + [to.name]
+          new_path.artists << from.name
+          path.artists.each {|a| new_path.artists << a }
+          new_path.artists << to.name
           return new_path
         end
 
