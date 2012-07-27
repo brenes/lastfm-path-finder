@@ -62,7 +62,7 @@ class LastfmPathFinder::Finder
 
     # Now we get the first one and return a path with these three nodes
     unless shared_relate.blank?
-      shared_contact = shared_relate.sort_by{|r|r[:score]}.first
+      shared_contact = shared_relate.sort_by{|r|r[:score]}.last
 
       path = LastfmPathFinder::Path.new from, to
       path.score = shared_contact[:score]
