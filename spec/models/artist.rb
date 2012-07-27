@@ -40,10 +40,11 @@ describe LastfmPathFinder::Artist do
       artist = LastfmPathFinder::Artist.new :name => "pink floyd"
       related = artist.related_artists
       related.should_not be_nil
-      related.members(:with_scores => true).last[0].should be_eql("David Gilmour")
-      related.members(:with_scores => true).last[1].should be_eql(1.0)
-      related.members(:with_scores => true)[-2][0].should be_eql("Roger Waters")
-      related.members(:with_scores => true)[-2][1].should be_eql(0.778598)
+
+      related.members.last.should be_eql("David Gilmour")
+      related.score("David Gilmour").should be_eql(1.0)
+      related.members[-2].should be_eql("Roger Waters")
+      related.score("Roger Waters").should be_eql(0.778598)
     end
 
   end

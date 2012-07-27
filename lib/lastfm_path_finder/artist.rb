@@ -22,9 +22,10 @@ class LastfmPathFinder::Artist
   end
     
   def related_artists_in_lastfm
-    artists = LastfmPathFinder::Settings.lastfm_api.artist.get_similar(self.name)
+    artists = LastfmPathFinder::Settings.lastfm_api.artist.get_similar(self.name.value)
+    related_artists_without_lastfm.clear
     artists.each do |artist|
-      related_artists_without_lastfm[artist["name"]] = artist["match"]
+      related_artists_without_lastfm[artist["name"]] = artist["match"].to_f
     end
     related_artists_without_lastfm
   end
