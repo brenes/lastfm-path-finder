@@ -21,8 +21,8 @@ class LastfmPathFinder::Finder
     related_from = from.related_artists
 
     # 2)
-    score = related_from.score(to.name)
-    unless score.nil?
+    if related_from.member?(to.name.value)
+      score = related_from.score(to.name.value)
       path = LastfmPathFinder::Path.new from, to
       path.score = score
       path.artists << from.name.value
@@ -34,8 +34,8 @@ class LastfmPathFinder::Finder
     related_to = to.related_artists
 
     # 4)
-    score = related_to.score(from.name)
-    unless score.nil?
+    if related_from.member?(from.name.value)
+      score = related_to.score(from.name.value)
       path = LastfmPathFinder::Path.new from, to
       path.score = score
       path.artists << from.name.value
