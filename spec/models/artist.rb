@@ -8,8 +8,12 @@ VCR.configure do |c|
   c.hook_into :webmock # or :fakeweb
 end
 
-describe LastfmPathFinder::Artist do 
+describe LastfmPathFinder::Artist do
 
+  it "should have no data when not requested to LastFM" do
+    artist = LastfmPathFinder::Artist.new(:id => "pink-floyd")
+    artist.name.should be_nil
+  end
   it "gets data for existing artists from Last.FM" do
 
     VCR.use_cassette('lastfm', :record => :new_episodes) do
