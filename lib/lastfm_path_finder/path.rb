@@ -6,6 +6,7 @@ class LastfmPathFinder::Path
   attr_accessor :artist_from, :artist_to
 
   list :artists
+  value :score
 
   def initialize from, to
     self.artist_from = from
