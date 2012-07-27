@@ -1,13 +1,5 @@
 require 'lib/lastfm_path_finder'
 
-require 'vcr'
-
-VCR.configure do |c|
-  c.allow_http_connections_when_no_cassette = true
-  c.cassette_library_dir = 'spec/vcr'
-  c.hook_into :webmock # or :fakeweb
-end
-
 describe LastfmPathFinder::Artist do
 
   it "should have no data when not requested to LastFM" do
