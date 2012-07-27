@@ -2,15 +2,18 @@ require 'lib/lastfm_path_finder'
 
 describe LastfmPathFinder::Path do
 
+  let(:from) {LastfmPathFinder::Artist.new(:name => from_name)}
+  let(:to) {LastfmPathFinder::Artist.new(:name => to_name)}
+  let(:path) do
+    VCR.use_cassette('lastfm', :record => :new_episodes) do
+      LastfmPathFinder::Finder.find from, to
+    end
+  end
+
   context "when there's a direct path between artists" do
 
-    let(:from) {LastfmPathFinder::Artist.new(:name => "Pink Floyd")}
-    let(:to) {LastfmPathFinder::Artist.new(:name => "David Gilmour")}
-    let(:path) do
-      VCR.use_cassette('lastfm', :record => :new_episodes) do
-        LastfmPathFinder::Finder.find from, to
-      end
-    end
+    let(:from_name) {"Pink Floyd"}
+    let(:to_name) {"David Gilmour"}
 
     subject { path }
     it { should be_found }
@@ -20,13 +23,8 @@ describe LastfmPathFinder::Path do
 
   context "when two artists share a common related artist" do
 
-    let(:from) {LastfmPathFinder::Artist.new(:name => "Pink Floyd")}
-    let(:to) {LastfmPathFinder::Artist.new(:name => "B.B. King & Eric Clapton")}
-    let(:path) do
-      VCR.use_cassette('lastfm', :record => :new_episodes) do
-        LastfmPathFinder::Finder.find from, to
-      end
-    end
+    let(:from_name) {"Pink Floyd"}
+    let(:to_name) {"B.B. King & Eric Clapton"}
 
     subject { path }
     it { should be_found }
