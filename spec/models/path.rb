@@ -1,15 +1,27 @@
 require 'lib/lastfm_path_finder'
 
-describe LastfmPathFinder::Path do 
+describe LastfmPathFinder::Path do
 
-  it "should be marked as not found before the path is found" do
+  describe "when there's no path" do
 
-    from = LastfmPathFinder::Artist.new(:name => "from")
-    to = LastfmPathFinder::Artist.new(:name => "to")
-    
-    path = LastfmPathFinder::Path.new from, to
-    path.should_not be_path_found
+    let(:from) {LastfmPathFinder::Artist.new(:name => "from")}
+    let(:to) {LastfmPathFinder::Artist.new(:name => "to")}
+    let(:path) { LastfmPathFinder::Finder.find from, to }
 
-  end  
+    subject { path }
+    it { should_not be_found }
+
+  end
+
+  context "when there's path" do
+
+    let(:from) {LastfmPathFinder::Artist.new(:name => "Pink Floyd")}
+    let(:to) {LastfmPathFinder::Artist.new(:name => "David Gilmour")}
+    let(:path) { LastfmPathFinder::Finder.find from, to }
+
+    subject { path }
+    it { should be_found }
+
+  end
 
 end

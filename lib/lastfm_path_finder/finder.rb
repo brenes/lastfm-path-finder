@@ -74,12 +74,12 @@ class LastfmPathFinder::Finder
     end
 
     #6)
-     
+
     # We store the artists for the score
     related_from_members.reverse!
     related_to_members.reverse!
 
-    related_from_members.each do |from_name, from_score|      
+    related_from_members.each do |from_name, from_score|
       related_to_members.each do |to_name, to_score|
 
         path = self.find(LastfmPathFinder::Artist.new(:name => r_from), LastfmPathFinder::Artist.new(:name => r_to))
@@ -96,7 +96,7 @@ class LastfmPathFinder::Finder
       end
     end
 
-    return nil
+    path
 
   end
 
