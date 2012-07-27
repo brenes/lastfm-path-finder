@@ -8,9 +8,10 @@ class LastfmPathFinder::Artist
   value :name
   sorted_set :related_artists
 
-  def initialize params  
-    self.id = (params["name"] || params[:name]).parameterize
-    self.name = params["name"] || params[:name]  
+  def initialize params
+    params.symbolize_keys!
+    self.id = params [:id] || (params[:name]).parameterize
+    self.name = params[:name]
   end
 
   alias_method :related_artists_without_lastfm, :related_artists
