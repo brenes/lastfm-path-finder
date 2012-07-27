@@ -15,7 +15,7 @@ class LastfmPathFinder::Path
   end
 
   def found?
-    !artists.blank?
+    !artists.values.empty?
   end
 
 
