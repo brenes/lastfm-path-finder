@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 
 require 'rubygems'
-require "bundler/setup"
 require 'commander/import'
 require 'lib/lastfm_path_finder'
 
