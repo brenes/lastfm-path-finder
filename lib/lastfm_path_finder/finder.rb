@@ -8,14 +8,21 @@ class LastfmPathFinder::Finder
   # 4) We check if From is in this list
   # 5) We check if both related lists share (at least, one artist)
   # 6) We update the score tables and try in a recursive way to find a way between any pair of nodes of the relateds lists
-  def self.find from, to, currently_included = []
+  def self.find from, to, options = {}
+
+    default_options = {max_length: 7, threshold: 0.4}
+    options.merge! default_options
+
+    currently_included = options[:currently_included] || []
+    currently_included = currently_included.dup
 
     # 0)
-    path = LastfmPathFinder::Path.new from, to
-    return path unless path.artists.blank?
 
-    currently_included.push from
-    currently_included.push to
+    path = LastfmPathFinder::Path.new from, to
+    return path if path.found?
+
+    currently_included.push from.name.value
+    currently_included.push to.name.value
 
     # 1)
     related_from = from.related_artists
@@ -52,9 +59,9 @@ class LastfmPathFinder::Finder
     shared_relate = []
     related_from_members.each do |name|
 
-      score = related_from.score(name)
-      other_score = related_to.score(name)
-      unless other_score.nil?
+      if related_to.member? name
+        score = related_from.score(name)
+        other_score = related_to.score(name)
         shared_relate << {:name => name, :score => score*other_score}
       end
 
@@ -76,26 +83,29 @@ class LastfmPathFinder::Finder
 
     #6)
 
+    # If the path is too long we don't look for longer paths
+
+    return path if currently_included.size > (options[:max_length]-2)
+
     # We store the artists for the score
     related_from_members.reverse!
     related_to_members.reverse!
 
-    related_from_members.each do |from_name|
+    (related_from_members - currently_included).reject{|from_name|related_from.score(from_name) < options[:threshold] }.each do |from_name|
 
       from_score = related_from.score(from_name)
 
-      related_to_members.each do |to_name|
+      (related_to_members - currently_included).reject{|to_name|related_to.score(to_name) < options[:threshold] }.each do |to_name|
 
         to_score = related_to.score(to_name)
 
-        path = self.find(LastfmPathFinder::Artist.new(:name => r_from), LastfmPathFinder::Artist.new(:name => r_to))
-
-        unless path.nil?
+        path = self.find(LastfmPathFinder::Artist.new(:name => from_name), LastfmPathFinder::Artist.new(:name => to_name), options.merge(currently_included: currently_included))
+        if path.found?
           new_path = LastfmPathFinder::Path.new from, to
           new_path.score = path.score * from_score * to_score
-          new_path.artists << from.name
+          new_path.artists << from.name.value
           path.artists.each {|a| new_path.artists << a }
-          new_path.artists << to.name
+          new_path.artists << to.name.value
           return new_path
         end
 

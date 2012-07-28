@@ -33,4 +33,17 @@ describe LastfmPathFinder::Path do
 
   end
 
+
+  context "when two artists not share a common related artist" do
+
+    let(:from_name) {"Pink Floyd"}
+    let(:to_name) {"The Sunday Drivers"}
+
+    subject { path }
+    it { should be_found }
+    it { path.artists.count.should be_eql(7) }
+    it { path.artists.values.should == ( ["Pink Floyd", "David Gilmour", "Nick Mason", "Serú Girán", "Ismael Serrano", "Quique González", "The Sunday Drivers"]) }
+
+  end
+
 end
