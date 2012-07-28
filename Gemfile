@@ -9,3 +9,4 @@ gem "redis-objects"
 gem 'rspec-redis_helper'
 gem "settingslogic"
 gem "commander"
+gem "jeweler"
