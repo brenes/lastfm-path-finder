@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'commander/import'
-require 'lib/lastfm_path_finder'
+require_relative '../lib/lastfm_path_finder'
 
 program :version, "1.0"
 program :description, 'Finding paths between artists in Lastfm since 1888'
