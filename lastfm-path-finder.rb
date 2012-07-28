@@ -8,6 +8,8 @@ require 'lib/lastfm_path_finder'
 program :version, "1.0"
 program :description, 'Finding paths between artists in Lastfm since 1888'
 
+default_command :find
+
 command :find do |c|
   c.syntax = 'lastfm-path-finder find [options]'
   c.summary = 'Find paths between two artists'
@@ -15,14 +17,17 @@ command :find do |c|
   c.example 'Search the path between Pink Floyd and Franz Ferdinand', 'lastfm-path-finder find "Pink Floyd" "Franz Ferdinand"'
   c.action do |args, options|
 
-    from = LastfmPathFinder::Artist.new(:name => args.first)
-    to = LastfmPathFinder::Artist.new(:name => args[1])
+    from_name = ask("One artist: ")
+    to_name = ask("Another artist: ")
+
+    from = LastfmPathFinder::Artist.new(:name => from_name)
+    to = LastfmPathFinder::Artist.new(:name => to_name)
     path = LastfmPathFinder::Finder.find from, to
 
     if path.found?
-      puts "Path found! #{path.artists.values.join(" --> ")}"
+      say "Path found! #{path.artists.values.join(" --> ")}"
     else
-      puts "No path found"
+      say "No path found"
     end
   end
 end
