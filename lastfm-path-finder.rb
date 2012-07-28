@@ -17,8 +17,8 @@ command :find do |c|
   c.example 'Search the path between Pink Floyd and Franz Ferdinand', 'lastfm-path-finder find "Pink Floyd" "Franz Ferdinand"'
   c.action do |args, options|
 
-    from_name = ask("One artist: ")
-    to_name = ask("Another artist: ")
+    from_name = args.first || ask("One artist: ")
+    to_name = args[1] || ask("Another artist: ")
 
     from = LastfmPathFinder::Artist.new(:name => from_name)
     to = LastfmPathFinder::Artist.new(:name => to_name)
