@@ -1,6 +1,5 @@
 module LastfmPathFinder
   require 'rubygems'
-  require "bundler/setup"
   require 'lastfm'
   require 'redis'
   require 'redis/objects'
