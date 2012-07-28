@@ -8,4 +8,6 @@ module LastfmPathFinder
   require 'lastfm_path_finder/settings'
   Settings.redis_connection
   require 'lastfm_path_finder/artist'
+  require 'lastfm_path_finder/path'
+  require 'lastfm_path_finder/finder'
 end
