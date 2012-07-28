@@ -2,7 +2,7 @@ This project is the implementation of a conversation between César Alvarez Dova
 
 == How to use it?
 
-Right now we have very few code but you could try:
+First, donwolad this repository and install the dependant gems:
 
  gem install bundler
 
@@ -10,17 +10,6 @@ and then:
 
  bundle install
 
-and then a tiny script such as:
+and then run the command:
 
- require "rubygems"
- require "bundler/setup"
-
- require 'lib/settings'
-
- Settings.lastfm.artist.get_similar("kid606").each do |artist|
-
-   if artist.is_a? Hash
-     puts "#{artist["name"]}: #{artist["match"]}"
-   end
-
- end
+ ./lastfm-path-finder.rb "Pink Floyd" "Franz Ferdinand"
