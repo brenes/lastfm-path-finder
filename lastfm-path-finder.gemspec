@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{lastfm-path-finder}
-  s.version = "1.0.0"
+  s.version = "1.0.1"
 
   s.executables << 'lastfm-path-finder'
 
@@ -23,7 +23,6 @@ Gem::Specification.new do |s|
     "README",
     "VERSION",
     "config/settings.example.yml",
-    "lastfm-path-finder.rb",
     "lib/lastfm_path_finder.rb",
     "lib/lastfm_path_finder/artist.rb",
     "lib/lastfm_path_finder/finder.rb",
