@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "lastfm-path-finder"
   gem.homepage = "http://github.com/brenes/lastfm-path-finder"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: Finding paths between artists in Lastfm since 1888}
-  gem.description = %Q{TODO: gem for finding paths between artists in Last.fm}
+  gem.summary = %Q{Finding paths between artists in Lastfm since 1888}
+  gem.description = %Q{Gem for finding paths between artists in Last.fm}
   gem.email = "davidjbrenes@gmail.com"
   gem.authors = ["David J. Brenes"]
   # dependencies defined in Gemfile
