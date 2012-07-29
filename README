@@ -1,15 +1,71 @@
 This project is the implementation of a conversation between César Alvarez Doval and myself, a program which finds a path between two (apparently) unrelated artists.
 
-== How to use it?
+== Installation
 
-First, donwolad this repository and install the dependant gems:
+Just a simple and clean
 
- gem install bundler
+ gem install lastfm-path-finder
 
-and then:
+== Requisites
 
- bundle install
+It requires Redis. It's been developed using a Redis 2.4.6 and Ubuntu 11.10.
 
-and then run the command:
+== Last.fm settings
 
- ./lastfm-path-finder.rb "Pink Floyd" "Franz Ferdinand"
+You need both an API key and an API secret from Last.fm to use this gem. You can obtain them in the Last.fm API site (http://www.lastfm.es/api).
+
+You must load this API settings in an YML file like the one in config/settings.example.yml and provide its path to the gem (see below for detailed use both as a command and as a library). By default it looks for it in config/settings.yml .
+
+== How to use the commands?
+
+=== Finding similar artists
+
+Run the command:
+
+ lastfm-path-finder similar "Pink Floyd"
+
+To obtain the artists similar to Pink Floyd according to Last.fm
+
+You can find those similar artists that a list of artists have in common by providing multiple artists names:
+
+ lastfm-path-finder similar "Pink Floyd" "Beatles"
+
+=== Finding a path
+
+Run the command:
+
+ lastfm-path-finder "Pink Floyd" "Beatles"
+
+And you will find the path of similar artists that comes from Pink Floyd to Beatles
+
+=== Lastfm Settings
+
+In order to provide the settings path just add the --settings option to the command you are running
+
+ lastfm-path-finder similar "Pink Floyd" --settings path/to/settings.file.yml
+
+== How to use the gem
+
+=== Finding similar artists
+
+ LastfmPathFinder::Artist.new(:name => "Pink Floyd").related_artists
+
+You obtain a Redis SortedSet
+
+=== Finding a path
+
+ from = LastfmPathFinder::Artist.new(:name => "Pink Floyd")
+ to = LastfmPathFinder::Artist.new(:name => "Franz Ferdinand")
+ path = LastfmPathFinder::Finder.find from, to
+
+You obtain a LastfmPathFinder::Path object.
+
+=== Lastfm Settings
+
+In order to provide the settings path just execute the source method on Settings class before you try to obtain any data from Lastfm.
+
+ LastfmPathFinder::Settings.source "path/to/settings.file.yml"
+
+== Contributions
+
+Gemfile includes all the requried gemos to develope this gem. Fork and pull request any feature you think could be interesting :)
