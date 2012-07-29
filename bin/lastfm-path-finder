@@ -36,3 +36,37 @@ command :find do |c|
   end
 end
 
+
+command :similar do |c|
+  c.syntax = 'lastfm-path-finder similar ARTIST_NAME [ARTIST_NAME]* [options]'
+  c.summary = 'Shows similar artists to a given artist or common similar artists if more than one artis is given'
+  c.description = 'Shows similar artists to a given artist or common similar artists if more than one artis is given'
+  c.example 'Show artists similar to Pink Floyd', 'lastfm-path-finder similar "Pink Floyd"'
+  c.example 'Show artists similar to Pink Floyd AND Franz Ferdinand', 'lastfm-path-finder similar "Pink Floyd" "Franx Ferdinand"'
+  c.option '--settings SETTINGS_PATH', String, 'Path to the settings file (DEFAULT: config/settings.yml)'
+  c.action do |args, options|
+
+    LastfmPathFinder::Settings.source options.settings unless options.settings.blank?
+
+    args << ask("Please, give me at least one artist: ") if args.blank?
+
+    similar_artists_lists = []
+
+    args.each do |arg|
+      similar_artists_lists << LastfmPathFinder::Artist.new(:name => arg).related_artists
+    end
+
+    common_similar = []
+
+    similar_artists_lists.each do |similar_artists_list|
+      common_similar = common_similar.blank? ? similar_artists_list.members.reverse : (common_similar & similar_artists_list.members)
+    end
+
+    if common_similar.blank?
+      say "No #{'common ' if args.size > 1}similar artists found"
+    else
+      say "Similar artists found:"
+      say common_similar.map{|common| " --- #{common}: #{similar_artists_lists.map{|list| list.score(common)}.join(", ")}"}.join("\n")
+    end
+  end
+end
