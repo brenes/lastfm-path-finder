@@ -14,7 +14,12 @@ command :find do |c|
   c.summary = 'Find paths between two artists'
   c.description = 'Find paths between two artists in Last.fm'
   c.example 'Search the path between Pink Floyd and Franz Ferdinand', 'lastfm-path-finder find "Pink Floyd" "Franz Ferdinand"'
+  c.example 'Search the path without putting the artist names in the command line (the command will ask for them)', 'lastfm-path-finder find'
+  c.example 'Load settings in a different path', 'lastfm-path-finder find --settings path/to/settings'
+  c.option '--settings SETTINGS_PATH', String, 'Path to the settings file (DEFAULT: config/settings.yml)'
   c.action do |args, options|
+
+    LastfmPathFinder::Settings.source options[:settings] unless options[:settings].blank?
 
     from_name = args.first || ask("One artist: ")
     to_name = args[1] || ask("Another artist: ")
