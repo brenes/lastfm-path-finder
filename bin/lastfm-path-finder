@@ -19,7 +19,7 @@ command :find do |c|
   c.option '--settings SETTINGS_PATH', String, 'Path to the settings file (DEFAULT: config/settings.yml)'
   c.action do |args, options|
 
-    LastfmPathFinder::Settings.source options[:settings] unless options[:settings].blank?
+    LastfmPathFinder::Settings.source options.settings unless options.settings.blank?
 
     from_name = args.first || ask("One artist: ")
     to_name = args[1] || ask("Another artist: ")
